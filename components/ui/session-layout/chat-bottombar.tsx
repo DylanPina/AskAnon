@@ -41,7 +41,7 @@ export default function ChatBottombar() {
         onChange={handleInputChange}
         name="message"
         placeholder="Ask a question!"
-        className="mb-6 w-full border flex items-center h-9 resize-none overflow-hidden bg-white bg-opacity-5"
+        className="text-white mb-6 w-full border flex items-center h-9 resize-none overflow-hidden bg-white bg-opacity-5"
       ></Textarea>
       <div className="absolute right-2 bottom-0.5 text-white">
         <EmojiPicker
