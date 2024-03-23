@@ -3,7 +3,9 @@ import ChatBottombar from "@/components/ui/session-layout/chat-bottombar";
 
 export default function ChatLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <div className="h-screen flex flex-col justify-between">
       <Session_Info></Session_Info>
