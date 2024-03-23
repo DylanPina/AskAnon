@@ -31,7 +31,7 @@ export async function createSession(professorId: string, sessionName: string) {
  * @param sessionName - Name of the session to check.
  * @returns Boolean indicating whether the session exists.
  */
-async function sessionExists(sessionName: string): Promise<boolean> {
+export async function sessionExists(sessionName: string): Promise<boolean> {
   const sessionRef = doc(collection(db, "sessions"), sessionName);
   const docSnap = await getDoc(sessionRef);
   return docSnap.exists();

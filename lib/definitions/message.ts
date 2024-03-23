@@ -1,6 +1,6 @@
 export type Message = {
-  id: string;
-  fake_name: string;
+  uid: string;
+  fakeName: string;
   content: string;
-  created_at: Date;
+  createdAt: Date;
 };
