@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export default function Home() {
+export default function Page() {
     return (
-        <div className="flex justify-center w-screen h-screen h-9/12">
+        <div className="flex justify-center w-screen h-screen">
             <div className="relative bottom-36 flex w-3/12 space-y-12 flex-col justify-center">
                 <Image
                     className="mb-1"
