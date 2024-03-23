@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase/firebase";
+import { createSession } from "@/lib/data/session";
 
 export default async function Home() {
-  const querySnapshot = await getDocs(collection(db, "professors"));
-  const professors = querySnapshot.docs.map((doc) => doc.data().name);
+  const newSession = await createSession(
+    "dsp209@scarletmail.rutgers.edu",
+    "session-1",
+  );
 
-  console.log(professors);
+  console.log(`Session created: ${JSON.stringify(newSession, null, 2)}`);
 
   return (
     <div className="flex flex-col space-y-10 w-screen h-screen items-center bg-primary-gray p-10">
