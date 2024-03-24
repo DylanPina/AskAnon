@@ -1,6 +1,4 @@
 import Session_Info from "@/components/ui/session-layout/session-info";
-import { Textarea } from "@/components/ui/textarea";
-import { EmojiPicker } from "@/components/emoji-picker";
 import ChatBottombar from "@/components/ui/session-layout/chat-bottombar";
 
 export default function ChatLayout({
@@ -9,13 +7,15 @@ export default function ChatLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-full flex flex-col justify-between">
-      <Session_Info></Session_Info>
-      <div className="flex justify-center overflow-y-auto max-h-full">
-        <div className="w-1/2">
-          {children}
-          <ChatBottombar></ChatBottombar>
-        </div>
+    <div className="flex flex-col h-screen">
+      <div className="sticky top-0 z-10 pb-2">
+        <Session_Info />
+      </div>
+
+      {children}
+
+      <div className="sticky bottom-0 pt-2 z-10">
+        <ChatBottombar />
       </div>
     </div>
   );
