@@ -20,7 +20,7 @@ const Page: React.FC<{ params: { id: string } }> = ({ params }) => {
       setSessionExists(docSnapshot.exists());
     });
 
-    return async () => {
+    return () => {
       unsubscribe();
     };
   }, [id, router, user]);
