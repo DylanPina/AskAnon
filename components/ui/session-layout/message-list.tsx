@@ -24,9 +24,11 @@ export default function MessageList({ sessionId }: Props) {
 
   return (
     <div className="flex flex-col place-self-center space-y-4 h-full max-w-[1200px] overflow-y-auto w-full pt-4">
-      {groupedMessages.map((group: any, index: any) => (
-        <MessageBubble key={index} group={group} />
-      ))}
+      {groupedMessages.length === 0 ? (
+        <div className="text-center py-4 text-white font-bold text-2xl">No messages... yet</div>
+      ) : (
+        groupedMessages.map((group: any, index: any) => <MessageBubble key={index} group={group} />)
+      )}
     </div>
   );
 }
