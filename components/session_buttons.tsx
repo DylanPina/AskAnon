@@ -15,11 +15,11 @@ export default function SessionButtons() {
   return (
     <div className="flex flex-col items-center space-y-5">
       <Input
-        className="bg-white"
+        className="bg-primary-white text-black"
         placeholder="Enter session code..."
         value={sessionCode}
         onChange={handleInputChange}
-      ></Input>
+      />
       <div className="flex flex-col items-center space-y-3">
         <JoinSessionButton sessionCode={sessionCode} />
         <CreateSessionButton sessionCode={sessionCode} />

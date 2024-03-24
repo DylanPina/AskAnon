@@ -1,13 +1,27 @@
 import { db } from "@/firebase/firebase";
-import { collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { generateGoofyName } from "./goofy_names";
 
 /**
  * Creates a session in the database
  *
- * @param professorId - ID of the professor creating the session
+ * @param professorEmail - ID of the professor creating the session
  * @param sessionName - Name of the session
  */
-export async function createSession(professorId: string, sessionName: string) {
+export async function createSession(
+  professorEmail: string,
+  sessionName: string,
+) {
   if (!sessionName) {
     throw new Error("Session name is required");
   }
@@ -17,9 +31,48 @@ export async function createSession(professorId: string, sessionName: string) {
   }
 
   const docRef = await setDoc(doc(db, "sessions", sessionName), {
-    professor: professorId,
+    professor: professorEmail,
   });
   return docRef;
+}
+
+/**
+ * Join a session
+ *
+ * @param uid - ID of the user joining the session
+ * @param sessionName - Name of the session
+ */
+export async function joinSession(uid: string, sessionName: string) {
+  if (!(await sessionExists(sessionName))) {
+    throw new Error(`Session: [${sessionName}] does not exist`);
+  }
+
+  if (await userExistsInSession(sessionName, uid)) {
+    throw new Error(
+      `User: [${uid}] already exists in session: [${sessionName}]`,
+    );
+  }
+
+  let attempts = 0;
+  let goofyName = generateGoofyName();
+  let nameExists = await nameExistsInSession(sessionName, goofyName);
+
+  while (nameExists && attempts < 10) {
+    goofyName = generateGoofyName();
+    nameExists = await nameExistsInSession(sessionName, goofyName);
+    attempts++;
+  }
+
+  if (nameExists) {
+    throw new Error(
+      `Could not generate a unique fake name after ${attempts} attempts`,
+    );
+  }
+
+  await addDoc(collection(db, "sessions", sessionName, "users"), {
+    uid: uid,
+    fakeName: goofyName,
+  });
 }
 
 /**
@@ -34,17 +87,50 @@ export async function sessionExists(sessionName: string): Promise<boolean> {
   return docSnap.exists();
 }
 
-/**
- * Deletes a session given a sessionId.
+/** Checks if user exists in a session
  *
- * @param sessionId - ID of the session to delete.
+ * @param sessionName - ID of the session to check
+ * @param uid - ID of the user to check
  */
-export async function deleteSession(sessionId: string) {
-  const sessionRef = doc(db, "sessions", sessionId);
+export async function userExistsInSession(
+  sessionName: string,
+  uid: string,
+): Promise<boolean> {
+  const usersRef = collection(db, "sessions", sessionName, "users");
+  const q = query(usersRef, where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+}
+
+/**
+ * Checks if a name exists in a session
+ *
+ * @param sessionName - ID of the session to check
+ * @param name - Name to check
+ */
+export async function nameExistsInSession(
+  sessionName: string,
+  name: string,
+): Promise<boolean> {
+  const usersRef = collection(db, "sessions", sessionName, "users");
+  const q = query(usersRef, where("fakeName", "==", name));
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+}
+
+/**
+ * Deletes a session given a sessionName.
+ *
+ * @param sessionName - ID of the session to delete.
+ */
+export async function deleteSession(sessionName: string) {
+  const sessionRef = doc(db, "sessions", sessionName);
 
   try {
     await deleteDoc(sessionRef);
-    console.log(`Session with ID ${sessionId} has been successfully deleted.`);
+    console.log(
+      `Session with ID ${sessionName} has been successfully deleted.`,
+    );
   } catch (error) {
     console.error("Error deleting session:", error);
   }
