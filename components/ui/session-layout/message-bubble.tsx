@@ -66,7 +66,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
             </span>
           </div>
           {hoveredMessage === idx && message.uid !== "1" && (
-            <div className="relative top-0 right-0 mt-2 mr-2">
+            <div className="relative top-0 right-0 mt-2 mb-2 mr-2">
               <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-l">Kick</button>
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-r">Mute</button>
             </div>
