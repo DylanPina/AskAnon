@@ -76,6 +76,31 @@ export async function joinSession(uid: string, sessionName: string) {
 }
 
 /**
+ * Leave a session
+ *
+ * @param uid - ID of the user leaving the session
+ * @param sessionName - Name of the session
+ */
+export async function leaveSession(uid: string, sessionName: string) {
+  if (!(await sessionExists(sessionName))) {
+    throw new Error(`Session: [${sessionName}] does not exist`);
+  }
+
+  const usersRef = collection(db, "sessions", sessionName, "users");
+  const q = query(usersRef, where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    throw new Error(
+      `User: [${uid}] does not exist in session: [${sessionName}]`,
+    );
+  }
+
+  const userDoc = querySnapshot.docs[0];
+  await deleteDoc(userDoc.ref);
+}
+
+/**
  * Checks if a session already exists in the database.
  *
  * @param sessionName - Name of the session to check.
@@ -169,4 +194,16 @@ export async function getFakeName(
 
   const userDoc = querySnapshot.docs[0];
   return userDoc.data().fakeName;
+}
+
+/**
+ * Get number of users in a session
+ *
+ * @param sessionName - Name of the session
+ */
+export async function getUserCount(sessionName: string): Promise<number> {
+  const usersRef = collection(db, "sessions", sessionName, "users");
+  const q = query(usersRef);
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.size;
 }
