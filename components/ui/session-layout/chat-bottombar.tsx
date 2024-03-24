@@ -1,13 +1,9 @@
 "use client";
 
-import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, Smile, ThumbsUp } from "lucide-react";
-import Link from "next/link";
+import { FileImage, Paperclip } from "lucide-react";
 import React, { useRef, useState } from "react";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { EmojiPicker } from "@/components/emoji-picker";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
@@ -22,7 +18,6 @@ export default function ChatBottombar() {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      //handleSend();
     }
 
     if (event.key === "Enter" && event.shiftKey) {
@@ -32,26 +27,29 @@ export default function ChatBottombar() {
   };
 
   return (
-    <div className="ml-6 max-w-4xl relative">
-      <Textarea
-        autoComplete="off"
-        value={message}
-        ref={inputRef}
-        onKeyDown={handleKeyPress}
-        onChange={handleInputChange}
-        name="message"
-        placeholder="Ask a question!"
-        className="text-white mb-6 w-full border flex items-center h-9 resize-none overflow-hidden bg-white bg-opacity-5"
-      ></Textarea>
-      <div className="absolute right-2 bottom-0.5 text-white">
-        <EmojiPicker
-          onChange={(value) => {
-            setMessage(message + value);
-            if (inputRef.current) {
-              inputRef.current.focus();
-            }
-          }}
-        />
+    <div className="flex justify-center w-full">
+      <div className="relative w-full max-w-[1200px]">
+        <Textarea
+          autoComplete="off"
+          value={message}
+          ref={inputRef}
+          onKeyDown={handleKeyPress}
+          onChange={handleInputChange}
+          name="message"
+          placeholder="Ask a question!"
+          className="text-white mb-6 w-full relative justify-self-center border h-10 resize-none overflow-hidden bg-white bg-opacity-5"
+        ></Textarea>
+
+        <div className="absolute right-2 bottom-1 text-white">
+          <EmojiPicker
+            onChange={(value) => {
+              setMessage(message + value);
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            }}
+          />
+        </div>
       </div>
     </div>
   );

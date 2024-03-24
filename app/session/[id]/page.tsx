@@ -17,11 +17,7 @@ const Page: React.FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
   console.log(id);
 
-  return (
-    <div className="flex-grow flex flex-col space-y-3 justify-start overflow-y-auto max-h-full">
-      <MessageList messages={mockMessages} />
-    </div>
-  );
+  return <MessageList messages={mockMessages} />;
 };
 
 export default Page;

@@ -11,11 +11,11 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
   const { user } = useUser();
 
   return (
-    <div className="flex flex-col max-w-4xl">
+    <div className="flex flex-col justify-between">
       {group.map((message, idx) => (
         <div
           key={idx}
-          className={`w-full ${
+          className={`${
             message.uid === "1"
               ? //user?.sub
                 "items-end"
@@ -27,7 +27,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
               className={`flex ${
                 message.uid !== "1"
                   ? //user?.sub
-                    "ml-4 justify-start"
+                    "justify-start"
                   : "justify-end"
               } items-center`}
             >
@@ -40,7 +40,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
                   <span className="text-white">{message.fakeName}</span>
                 </>
               )}
-              <span className="text-sm text-gray-500 ml-4">{new Date(message.createdAt).toLocaleTimeString()}</span>
+              <span className="text-sm text-gray-500 ml-4">
+                {new Date(message.createdAt).toLocaleTimeString()}
+              </span>
             </div>
           )}
           <div
@@ -49,7 +51,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
                 ? //user?.sub
                   "justify-end"
                 : "justify-start"
-            } ${message.uid !== user?.sub ? "ml-14" : ""}`}
+            } ${message.uid !== user?.sub ? "ml-12" : ""}`}
           >
             <span
               className={`px-4 py-2 rounded-lg inline-block mb-1 ${
