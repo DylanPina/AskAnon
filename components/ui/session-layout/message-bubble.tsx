@@ -2,6 +2,8 @@
 import React from "react";
 import { Message } from "@/lib/definitions/message";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import firebase from "firebase/app";
+import { Timestamp } from "firebase/firestore";
 
 type MessageBubbleProps = {
   group: Message[];
@@ -40,9 +42,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
                   <span className="text-white">{message.fakeName}</span>
                 </>
               )}
-              <span className="text-sm text-gray-500 ml-4">
-                {new Date(message.createdAt).toLocaleTimeString()}
-              </span>
+              <span className="text-sm text-gray-500 ml-4">{message.createdAt.toDate().toLocaleTimeString()}</span>
             </div>
           )}
           <div
