@@ -1,4 +1,3 @@
-import ChatListTest from "@/components/ui/chat_list_test";
 import React from "react";
 import type { Metadata } from "next";
 import { MessageList } from "@/components/ui/session-layout/message-list";
@@ -16,9 +15,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const Page: React.FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
+  console.log(id);
 
   return (
-    <div className="flex-grow flex flex-col space-y-3 justify-end">
+    <div className="flex-grow flex flex-col space-y-3 justify-start overflow-y-auto max-h-screen">
       <MessageList messages={mockMessages} />
     </div>
   );
