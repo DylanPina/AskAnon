@@ -1,5 +1,5 @@
 import { db } from "@/firebase/firebase";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 
 /**
  * Creates a session in the database
@@ -18,9 +18,6 @@ export async function createSession(professorId: string, sessionName: string) {
 
   const docRef = await setDoc(doc(db, "sessions", sessionName), {
     professor: professorId,
-    messages: [],
-    users: [],
-    banned_users: [],
   });
   return docRef;
 }
@@ -35,4 +32,20 @@ export async function sessionExists(sessionName: string): Promise<boolean> {
   const sessionRef = doc(collection(db, "sessions"), sessionName);
   const docSnap = await getDoc(sessionRef);
   return docSnap.exists();
+}
+
+/**
+ * Deletes a session given a sessionId.
+ *
+ * @param sessionId - ID of the session to delete.
+ */
+export async function deleteSession(sessionId: string) {
+  const sessionRef = doc(db, "sessions", sessionId);
+
+  try {
+    await deleteDoc(sessionRef);
+    console.log(`Session with ID ${sessionId} has been successfully deleted.`);
+  } catch (error) {
+    console.error("Error deleting session:", error);
+  }
 }
