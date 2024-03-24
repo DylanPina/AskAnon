@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-primary-gray">
+    <html lang="en" className="bg-primary-gray overflow-y-hidden">
       <body className={inter.className}>
         <Providers>{children}</Providers>1
       </body>

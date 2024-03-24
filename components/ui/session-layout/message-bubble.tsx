@@ -1,35 +1,69 @@
-import React from 'react';
-import { Message } from '@/lib/definitions/message';
+"use client";
+import React from "react";
+import { Message } from "@/lib/definitions/message";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 type MessageBubbleProps = {
-    group: Message[];
+  group: Message[];
 };
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => (
-    <div className="flex items-start ml-4">
-        {group.length > 0 && (
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mt-6">
-                {group[0].fakeName.slice(0, 2).toUpperCase()}
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
+  const { user } = useUser();
+
+  return (
+    <div className="flex flex-col max-w-4xl">
+      {group.map((message, idx) => (
+        <div
+          key={idx}
+          className={`w-full ${
+            message.uid === "1"
+              ? //user?.sub
+                "items-end"
+              : "items-start"
+          }`}
+        >
+          {idx === 0 && (
+            <div
+              className={`flex ${
+                message.uid !== "1"
+                  ? //user?.sub
+                    "ml-4 justify-start"
+                  : "justify-end"
+              } items-center`}
+            >
+              {message.uid !== "1" && (
+                //user?.sub
+                <>
+                  <div className="mt-1 mr-2 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                    {message.fakeName.slice(0, 2).toUpperCase()}
+                  </div>
+                  <span className="text-white">{message.fakeName}</span>
+                </>
+              )}
+              <span className="text-sm text-gray-500 ml-4">{new Date(message.createdAt).toLocaleTimeString()}</span>
             </div>
-        )}
-        <div className="flex flex-col space-y-2 text-s max-w-xs mx-2 items-start">
-            {group.map((message, idx) => (
-                <div key={idx}>
-                    {idx === 0 && (
-                        <>
-                            <span className="text-white">{message.fakeName}</span>
-                            <span className="ml-2 text-sm text-gray-500">
-                                {new Date(message.createdAt).toLocaleTimeString()}
-                            </span>
-                        </>
-                    )}
-                    <div>
-                        <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                            {message.content}
-                        </span>
-                    </div>
-                </div>
-            ))}
+          )}
+          <div
+            className={`flex ${
+              message.uid === "1"
+                ? //user?.sub
+                  "justify-end"
+                : "justify-start"
+            } ${message.uid !== user?.sub ? "ml-14" : ""}`}
+          >
+            <span
+              className={`px-4 py-2 rounded-lg inline-block mb-1 ${
+                message.uid === "1"
+                  ? //user?.sub
+                    "bg-blue-300"
+                  : "bg-gray-300"
+              } text-gray-600`}
+            >
+              {message.content}
+            </span>
+          </div>
         </div>
+      ))}
     </div>
-);
+  );
+};
