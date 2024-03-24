@@ -42,7 +42,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
                   <span className="text-white">{message.fakeName}</span>
                 </>
               )}
-              <span className="text-sm text-gray-500 ml-4">{message.createdAt.toDate().toLocaleTimeString()}</span>
+              <span className="text-sm text-gray-500 ml-4">
+                {message.createdAt ? message.createdAt.toDate().toLocaleTimeString() : "Unknown time"}
+              </span>
             </div>
           )}
           <div
