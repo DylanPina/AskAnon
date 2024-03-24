@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { MessageList } from "@/components/ui/session-layout/message-list";
-import { mockMessages } from "@/lib/mock-data/messages-mock-data";
+import MessageList from "@/components/ui/session-layout/message-list";
 
 type Props = {
   params: { id: string };
@@ -15,9 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const Page: React.FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
-  console.log(id);
 
-  return <MessageList messages={mockMessages} />;
+  return <MessageList sessionId={id} />;
 };
 
 export default Page;
