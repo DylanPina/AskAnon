@@ -9,10 +9,14 @@ export default function ChatLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-screen flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between">
       <Session_Info></Session_Info>
-      {children}
-      <ChatBottombar></ChatBottombar>
+      <div className="flex justify-center overflow-y-auto max-h-full">
+        <div className="w-1/2">
+          {children}
+          <ChatBottombar></ChatBottombar>
+        </div>
+      </div>
     </div>
   );
 }
