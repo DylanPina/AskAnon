@@ -11,16 +11,14 @@ export const useSessionMessages = (sessionId: string) => {
       collection(db, "sessions", sessionId, "messages"),
     );
 
-    const unsubscribe = onSnapshot(messagesQuery, (querySnapshot) => {
+    const unsubscribe = onSnapshot(messagesQuery, (querySnapshot: any) => {
       const fetchedMessages: any = [];
-      querySnapshot.forEach((doc) => {
-        fetchedMessages.push({ ...doc.data() });
+      querySnapshot.forEach((doc: any) => {
+        fetchedMessages.push({ id: doc.id, ...doc.data() });
       });
       setMessages(fetchedMessages);
       setLoading(false);
     });
-
-    console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
 
     return () => unsubscribe();
   }, [sessionId]);

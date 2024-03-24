@@ -207,3 +207,14 @@ export async function getUserCount(sessionName: string): Promise<number> {
   const querySnapshot = await getDocs(q);
   return querySnapshot.size;
 }
+
+/**
+ * Remove a message from a session
+ *
+ * @param sessionId - ID of the session
+ * @param messageId - ID of the message
+ */
+export async function deleteMessage(sessionId: string, messageId: string) {
+  const messageRef = doc(db, "sessions", sessionId, "messages", messageId);
+  await deleteDoc(messageRef);
+}

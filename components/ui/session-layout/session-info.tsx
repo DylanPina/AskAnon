@@ -22,7 +22,7 @@ export default function SessionInfo() {
   useEffect(() => {
     if (!sessionCode) return;
 
-    const fetchProfessorEmail = async () => {
+    const fetchIsProfessor = async () => {
       const sessionRef = doc(db, "sessions", sessionCode.toString());
       const docSnap: any = await getDoc(sessionRef);
       if (docSnap.exists()) {
@@ -30,7 +30,7 @@ export default function SessionInfo() {
       }
     };
 
-    fetchProfessorEmail();
+    fetchIsProfessor();
 
     const usersRef = collection(
       db,
