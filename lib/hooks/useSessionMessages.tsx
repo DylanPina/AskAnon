@@ -20,6 +20,8 @@ export const useSessionMessages = (sessionId: string) => {
       setLoading(false);
     });
 
+    console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
+
     return () => unsubscribe();
   }, [sessionId]);
 

@@ -5,21 +5,32 @@ import Image from "next/image";
 import exitIcon from "/public/images/exit-session.svg";
 import { useEffect, useState } from "react";
 import { db } from "@/firebase/firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { usePathname, useRouter } from "next/navigation";
 import UserCount from "../user_count";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { leaveSession } from "@/lib/data/session";
+import { deleteSession, leaveSession } from "@/lib/data/session";
 
 export default function SessionInfo() {
   const pathname = usePathname();
   const { user } = useUser();
   const sessionCode = pathname.split("/").pop();
   const [userCount, setUserCount] = useState(0);
+  const [isProfessor, setIsProfessor] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (!sessionCode) return;
+
+    const fetchProfessorEmail = async () => {
+      const sessionRef = doc(db, "sessions", sessionCode.toString());
+      const docSnap: any = await getDoc(sessionRef);
+      if (docSnap.exists()) {
+        setIsProfessor(docSnap.data().professor === user?.email);
+      }
+    };
+
+    fetchProfessorEmail();
 
     const usersRef = collection(
       db,
@@ -33,7 +44,14 @@ export default function SessionInfo() {
     });
 
     return () => unsubscribe();
-  }, [sessionCode]);
+  }, [sessionCode, user]);
+
+  const handleDeleteSession = async () => {
+    if (!sessionCode || !user || !user.email) return;
+
+    await deleteSession(sessionCode);
+    router.push("/");
+  };
 
   const handleLeaveSession = async () => {
     if (!sessionCode || !user || !user.email) return;
@@ -61,12 +79,21 @@ export default function SessionInfo() {
           </strong>
           <UserCount count={userCount} />
         </div>
-        <Button
-          onClick={handleLeaveSession}
-          className="bg-red-500 hover:shadow-red-500 hover:bg-red-500"
-        >
-          Leave
-        </Button>
+        {isProfessor ? (
+          <Button
+            onClick={handleDeleteSession}
+            className="bg-red-500 hover:shadow-red-500 hover:bg-red-500"
+          >
+            Delete Session
+          </Button>
+        ) : (
+          <Button
+            onClick={handleLeaveSession}
+            className="bg-red-500 hover:shadow-red-500 hover:bg-red-500"
+          >
+            Leave
+          </Button>
+        )}
       </div>
     </div>
   );

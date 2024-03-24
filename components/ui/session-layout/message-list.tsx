@@ -33,7 +33,7 @@ export default function MessageList({ sessionId }: Props) {
   );
 
   return (
-    <div className="flex flex-col place-self-center space-y-4 h-full max-w-[1200px] overflow-y-auto w-full pt-4">
+    <div className="flex flex-col place-self-center space-y-4 h-full max-w-[1200px] overflow-y-auto no-scrollbar w-full">
       {loading && <div>Loading...</div>}
       {!loading && groupedMessages.length === 0 ? (
         <div className="text-center py-4 text-white font-bold text-2xl">
