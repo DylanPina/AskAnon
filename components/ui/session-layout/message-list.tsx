@@ -1,11 +1,18 @@
-import React from "react";
-import { Message } from "@/lib/definitions/message";
-import { MessageBubble } from "./message-bubble";
+"use client";
 
-export const MessageList: React.FC<{ messages: Message[] }> = ({
-  messages,
-}) => {
-  const groupedMessages = messages.reduce((acc, message) => {
+import React from "react";
+import { MessageBubble } from "./message-bubble";
+import { Message } from "@/lib/definitions/message";
+import { useSessionMessages } from "@/lib/hooks/useSessionMessages";
+
+interface Props {
+  sessionId: string;
+}
+
+export default function MessageList({ sessionId }: Props) {
+  const { messages, loading } = useSessionMessages(sessionId);
+  console.log(`Messages: ${JSON.stringify(messages)}`);
+  const groupedMessages = messages.reduce((acc: any, message: any) => {
     const lastGroup = acc[acc.length - 1];
     if (lastGroup && lastGroup[lastGroup.length - 1].uid === message.uid) {
       lastGroup.push(message);
@@ -17,9 +24,9 @@ export const MessageList: React.FC<{ messages: Message[] }> = ({
 
   return (
     <div className="flex flex-col place-self-center space-y-4 h-full max-w-[1200px] overflow-y-auto w-full pt-4">
-      {groupedMessages.map((group, index) => (
+      {groupedMessages.map((group: any, index: any) => (
         <MessageBubble key={index} group={group} />
       ))}
     </div>
   );
-};
+}
