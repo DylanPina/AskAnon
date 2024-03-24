@@ -1,15 +1,11 @@
-import Session_Info from "@/components/ui/session-layout/session-info";
+import SessionInfo from "@/components/ui/session-layout/session-info";
 import ChatBottombar from "@/components/ui/session-layout/chat-bottombar";
 
-export default function ChatLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function ChatLayout({ children }: React.PropsWithChildren<any>) {
   return (
     <div className="flex flex-col h-screen">
       <div className="sticky top-0 z-10 pb-2">
-        <Session_Info />
+        <SessionInfo />
       </div>
 
       {children}

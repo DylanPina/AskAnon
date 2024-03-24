@@ -2,11 +2,17 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import exitIcon from "/public/images/exit-session.svg";
 
-export default function Session_Info() {
+export default function SessionInfo() {
   return (
     <div className="flex justify-between items-center bg-white bg-opacity-5">
       <Button className="bg-opacity-0 visibility: invisible">
-        <Image priority src={exitIcon} width={50} height={50} alt="Exit Session" />
+        <Image
+          priority
+          src={exitIcon}
+          width={50}
+          height={50}
+          alt="Exit Session"
+        />
       </Button>
       <div className="flex flex-col items-center">
         <strong>
@@ -15,7 +21,13 @@ export default function Session_Info() {
         <span className="text-[1rem] text-green-400">User Count</span>
       </div>
       <Button className="bg-opacity-0">
-        <Image priority src={exitIcon} width={50} height={50} alt="Exit Session" />
+        <Image
+          priority
+          src={exitIcon}
+          width={50}
+          height={50}
+          alt="Exit Session"
+        />
       </Button>
     </div>
   );

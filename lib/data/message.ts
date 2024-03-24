@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebase";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
-import { sessionExists } from "./session";
+import { getFakeName, sessionExists } from "./session";
 
 /**
  * Creates a message in a session
@@ -13,12 +13,18 @@ import { sessionExists } from "./session";
 export async function createMessage(
   sessionId: string,
   uid: string,
-  fakeName: string,
   content: string,
 ) {
   if (!(await sessionExists(sessionId))) {
     throw new Error(
       `Failed to create a message! Session: [${sessionId}] does not exist`,
+    );
+  }
+
+  const fakeName = await getFakeName(sessionId, uid);
+  if (!fakeName) {
+    throw new Error(
+      `Failed to create a message! User: [${uid}] does not exist in session: [${sessionId}]`,
     );
   }
 

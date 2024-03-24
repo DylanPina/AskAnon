@@ -135,3 +135,38 @@ export async function deleteSession(sessionName: string) {
     console.error("Error deleting session:", error);
   }
 }
+
+/**
+ * Checks if a user is a professor
+ *
+ * @param uid - ID of the user to check
+ */
+export async function isProfessor(uid: string) {
+  const docRef = doc(db, "professors", uid);
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists();
+}
+
+/**
+ * Gets the fakeName associated with the uid in the session
+ *
+ * @param sessionName - Name of the session
+ * @param uid - ID of the user
+ */
+export async function getFakeName(
+  sessionName: string,
+  uid: string,
+): Promise<string> {
+  const usersRef = collection(db, "sessions", sessionName, "users");
+  const q = query(usersRef, where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    throw new Error(
+      `User: [${uid}] does not exist in session: [${sessionName}]`,
+    );
+  }
+
+  const userDoc = querySnapshot.docs[0];
+  return userDoc.data().fakeName;
+}
