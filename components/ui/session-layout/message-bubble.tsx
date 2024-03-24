@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 import { Message } from "@/lib/definitions/message";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import firebase from "firebase/app";
@@ -11,18 +12,16 @@ type MessageBubbleProps = {
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
   const { user } = useUser();
+  const [hoveredMessage, setHoveredMessage] = useState<number | null>(null);
 
   return (
     <div className="flex flex-col justify-between">
       {group.map((message, idx) => (
         <div
           key={idx}
-          className={`${
-            message.uid === "1"
-              ? //user?.sub
-                "items-end"
-              : "items-start"
-          }`}
+          className={`${message.uid === user?.sub ? "items-end" : "items-start"} relative`} // Added relative for absolute positioning of buttons
+          onMouseEnter={() => setHoveredMessage(idx)}
+          onMouseLeave={() => setHoveredMessage(null)}
         >
           {idx === 0 && (
             <div
@@ -66,6 +65,12 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ group }) => {
               {message.content}
             </span>
           </div>
+          {hoveredMessage === idx && message.uid !== "1" && (
+            <div className="relative top-0 right-0 mt-2 mr-2">
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-l">Kick</button>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-r">Mute</button>
+            </div>
+          )}
         </div>
       ))}
     </div>
