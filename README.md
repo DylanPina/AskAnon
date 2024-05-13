@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AskAnon
+![AskAnon Logo](./public/images/hackathon-logo-gray-background.png)
 
-## Getting Started
+Get answers from your professor during lecture anonymously in real-time.
 
-First, run the development server:
+## What it Does
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+AskAnon allows verified professors at Rutgers to create anonymous live chat sessions. Creating a session generates a unique session ID that students can enter on the site to join the lecture chat and ask questions without the fear of asking a "stupid question."
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Inspiration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This semester in Deep Learning, our professor Dr. Cowan observed that many students were hesitant to ask questions. To address this, he started using a Google Doc to enable students to anonymously ask questions. The result has been a dramatic increase in engagement throughout the semester.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Inspired by this success, we developed a platform that allows professors to facilitate anonymous question submission during lectures, encouraging more students to participate and engage without fear.
 
-## Learn More
+We're hoping that by providing a platform that professors can use during lecture to allow students to anonymously ask questions, students will feel more inclined to participate and ask questions.
 
-To learn more about Next.js, take a look at the following resources:
+## How We Built It
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+We leveraged the Next.js framework to develop the site, utilizing Firebase as our database to store session message histories and new messages. For authentication, we integrated Auth0, which facilitates user and professor logins and verifies professors to enable session creation. Additionally, Auth0 ensures that users are authenticated with a Rutgers email domain.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Built With
 
-## Deploy on Vercel
+- Auth0
+- Firebase
+- Next.js
+- Tailwind
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Home Page](./public/images/session-selection-screen.png)
+![Chats](./public/images/user-chat.png)
+![Chats w/ Emojis](./public/images/user-chat-emojis.png)
